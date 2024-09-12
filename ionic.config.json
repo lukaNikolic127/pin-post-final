@@ -1,0 +1,7 @@
+{
+  "name": "pin-post",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

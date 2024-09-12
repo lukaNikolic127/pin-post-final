@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>banned</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">banned</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card color="warning">
+    <ion-card-header>
+      <ion-card-title>Banned</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-icon name="warning-outline"></ion-icon>
+      <ion-label>
+        You have been banned by admin!
+      </ion-label>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

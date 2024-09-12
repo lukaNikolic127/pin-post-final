@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>User details</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/users"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">User details</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{email}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size-sm="12" size-md="8" size-lg="6">
+          <ion-item>
+            <ion-label>Role</ion-label>
+            <ion-select [(ngModel)]="role" [disabled]="currentUserAuthId === userAuthId">
+              <ion-select-option *ngFor="let role of userRoles" [value]="role.name">{{ role.name }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size-sm="12" size-md="8" size-lg="6">
+          <ion-item>
+            <ion-label>Status</ion-label>
+            <ion-select [(ngModel)]="status" [disabled]="currentUserAuthId === userAuthId">
+              <ion-select-option *ngFor="let status of userStatuses"
+                                 [value]="status.name">{{ status.name }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+  <ion-button expand="block" color="primary" (click)="updateUser()" [disabled]="currentUserAuthId === userAuthId">Update</ion-button>
+</ion-content>

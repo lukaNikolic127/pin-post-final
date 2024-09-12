@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Users</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/tabs/all-posts"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">users</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list *ngFor="let user of users">
+    <ion-item [routerLink]="['user-detail', {userAuthId: user.authId, userDocId: user.id}]">
+      <ion-icon name="person-outline" slot="start"></ion-icon>
+      <ion-label>{{user.email}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

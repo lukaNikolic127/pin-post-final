@@ -1,0 +1,147 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>All posts</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar class="ion-align-items-center">
+      <ion-title size="large">All posts</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button id="showFiltersBtn" expand="full" color="secondary" (click)="toggleFilters()">Show filters
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-grid *ngIf="showFilters">
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-select label="Category" placeholder="Select category" [(ngModel)]="categoryForSearch">
+              <ion-select-option *ngFor="let category of categories"
+                                 [value]="category.id">{{category.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-select label="Sorting" placeholder="Select sorting" [(ngModel)]="sortingForSearch">
+              <ion-select-option value="creationTimeDesc">Most recent</ion-select-option>
+              <ion-select-option value="creationTimeAsc">Least recent</ion-select-option>
+              <ion-select-option value="likesDesc">Most popular</ion-select-option>
+              <ion-select-option value="likesAsc">Least popular</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-select label="User" placeholder="Select user" [(ngModel)]="userForSearch">
+              <ion-select-option *ngFor="let user of users" [value]="user.authId">{{user.email}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button expand="full" color="secondary" (click)="applyFilters()"
+                      [disabled]="!categoryForSearch && !sortingForSearch && !userForSearch">Apply filters
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button expand="full" color="secondary" (click)="resetFilters()"
+                      [disabled]="!categoryForSearch && !sortingForSearch && !userForSearch">Reset filters
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-grid>
+
+  <ion-grid *ngIf="noSearchResults" class="center-grid">
+    <ion-row>
+      <ion-col>
+        <ion-icon name="file-tray-outline"></ion-icon>
+      </ion-col>
+      <ion-row>
+        <ion-col>
+          <ion-label>No results for search</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list *ngFor="let extendedPost of extendedPosts">
+    <ion-item lines="none">
+      <ion-card>
+        <ion-card-header>
+          <ion-row>
+            <ion-col>
+              <ion-badge color="secondary">{{extendedPost.post.category}}</ion-badge>
+            </ion-col>
+            <ion-col>
+              <ion-badge color="secondary"
+                         [routerLink]="['user-info', {userAuthId: extendedPost.post.author}]">{{extendedPost.email}}</ion-badge>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-card-title>{{extendedPost.post.title}}</ion-card-title>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-img src="{{extendedPost.post.url}}"/>
+          <ion-row>
+            <ion-col>
+              <ion-card-content>{{extendedPost.post.description}}</ion-card-content>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="full" fill="clear" (click)="likePost(extendedPost.post)"
+                        [disabled]="extendedPost.email === currentUserEmail">
+              <ion-icon [id]="'heartIcon' + extendedPost.post.id" name="heart-outline"
+                        *ngIf="!extendedPost.post.likedBy.includes(currentUserAuthId)"></ion-icon>
+              <ion-icon [id]="'heartIcon' + extendedPost.post.id" name="heart"
+                        *ngIf="extendedPost.post.likedBy.includes(currentUserAuthId)"></ion-icon>
+              <ion-label [id]="'likes' + extendedPost.post.id">{{extendedPost.post.likedBy.length}}</ion-label>
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="full" fill="clear" (click)="addToFavorites(extendedPost.post)"
+                        [disabled]="extendedPost.email === currentUserEmail">
+              <ion-icon [id]="'saveIcon' + extendedPost.post.id" name="save-outline"
+                        *ngIf="!extendedPost.post.savedBy.includes(currentUserAuthId)"></ion-icon>
+              <ion-icon [id]="'saveIcon' + extendedPost.post.id" name="save"
+                        *ngIf="extendedPost.post.savedBy.includes(currentUserAuthId)"></ion-icon>
+              <ion-label [id]="'savings' + extendedPost.post.id">{{extendedPost.post.savedBy.length}}</ion-label>
+            </ion-button>
+          </ion-col>
+          <ion-col *ngIf="currentUserLoggedInAsAdmin">
+            <ion-button expand="full" fill="clear" (click)="onDeleteProblematicPost(extendedPost.post.id)">
+              <ion-icon name="trash-bin-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

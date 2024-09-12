@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Create category</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/tabs/categories"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <form [formGroup]="categoryForm" (ngSubmit)="createCategory()">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size-sm="12" size-md="8" size-lg="6">
+          <ion-item>
+            <ion-label position="floating">Category name</ion-label>
+            <ion-input type="text" formControlName="categoryName"></ion-input>
+          </ion-item>
+          <ion-item lines="none"
+                    *ngIf="categoryForm.get('categoryName')?.invalid && categoryForm.get('categoryName')?.touched">
+            <ion-label style="color: var(--ion-color-danger)">Category name is required!</ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size-sm="12" size-md="8" size-lg="6">
+          <ion-button type="submit" expand="block" size="large" [disabled]="!categoryForm.valid">Create</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>

@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Subscriptions</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/tabs/all-posts"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Subscriptions</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid *ngIf="noSubscriptions" class="center-grid">
+    <ion-row>
+      <ion-col>
+        <ion-icon name="file-tray-outline"></ion-icon>
+      </ion-col>
+      <ion-row>
+        <ion-col>
+          <ion-label>No subscriptions yet</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list *ngFor="let key of getObjectKeys(publishers)">
+    <ion-item-sliding>
+      <ion-item-options side="start">
+        <ion-item-option color="danger" (click)="unfollow(subscriberAuthId, key)">Unfollow</ion-item-option>
+      </ion-item-options>
+      <ion-item lines="none" [routerLink]="['../all-posts/user-info', {userAuthId: key}]"
+                (click)="removeBadge(subscriberAuthId, key)">
+        <ion-label>{{ publishersDisplay[key] }}</ion-label>
+        <ion-badge *ngIf="publishers[key]">New</ion-badge>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+
+</ion-content>

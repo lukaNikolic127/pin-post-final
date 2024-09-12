@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Favorites</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/tabs/all-posts"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Favorites</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid *ngIf="noFavorites" class="center-grid">
+    <ion-row>
+      <ion-col>
+        <ion-icon name="file-tray-outline"></ion-icon>
+      </ion-col>
+      <ion-row>
+        <ion-col>
+          <ion-label>No favorites yet</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list *ngFor="let post of posts">
+    <ion-item lines="none">
+      <ion-card>
+        <ion-card-header>
+          <ion-row>
+            <ion-col>
+              <ion-badge color="secondary">{{post.category}}</ion-badge>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-card-title>{{post.title}}</ion-card-title>
+            </ion-col>
+          </ion-row>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-img src="{{post.url}}"/>
+          <ion-row>
+            <ion-col>
+              <ion-card-content>{{post.description}}</ion-card-content>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="full" fill="clear" (click)="onRemoveFromFavorites(post)">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+</ion-content>

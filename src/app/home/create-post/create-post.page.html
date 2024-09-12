@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Create post</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/tabs/my-posts"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Create post</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <form [formGroup]="createPostForm" (ngSubmit)="createPost()">
+    <ion-grid>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size-sm="12" size-md="8" size-lg="6">
+          <ion-item>
+            <ion-label position="floating">Title</ion-label>
+            <ion-input type="text" formControlName="postTitle"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size-sm="12" size-md="8" size-lg="6">
+          <ion-item>
+            <ion-label position="floating">Description</ion-label>
+            <ion-input type="text" formControlName="postDescription"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button expand="full" (click)="f.click()">
+            <ion-icon lazy="true" slot="start" name="image"></ion-icon>
+            <ion-label slot="end">Select image</ion-label>
+          </ion-button>
+          <input class="ion-hide" #f type="file" formControlName="postImage" (change)="onFileChange($event)"
+                 id="file-input"
+                 accept="image/png, image/jpeg">
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size-sm="12" size-md="8" size-lg="6">
+          <ion-item>
+            <ion-select formControlName="postCategory" placeholder="Select category">
+              <ion-select-option *ngFor="let category of categories"
+                                 [value]="category.id">{{category.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size-sm="12" size-md="8" size-lg="6">
+          <ion-button type="submit" expand="block" size="large" [disabled]="!createPostForm.valid">Create</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+</ion-content>
